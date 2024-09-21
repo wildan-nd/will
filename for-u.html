@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dari Qoqoy Buat Kamu <3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden; /* To prevent scrolling */
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #message {
+            margin-bottom: 20px;
+            font-size: 20px;
+            animation: fadeIn 2s;
+        }
+
+        #additional-message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #FF5733;
+            display: none;
+        }
+
+        #animation {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #4CAF50;
+            animation: happyDance 2s infinite;
+        }
+
+        @keyframes happyDance {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .button-container {
+            position: relative;
+            height: 100px;
+        }
+
+        .moveable-button {
+            position: absolute;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .heart {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Heart_coraz%C3%B3n.svg/1024px-Heart_coraz%C3%B3n.svg.png') no-repeat center center;
+            background-size: contain;
+            animation: floatUp 2s ease-in infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-200px); opacity: 0; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="message">Tau ga si, sebenernya kamu itu lucu Hehe..</div>
+        <div id="responses">
+            <button onclick="respond('makasih')">Makasih</button>
+            <button onclick="respond('tidak')">Nuhun</button>
+        </div>
+        <div id="additional-message">Udah mah lucu, ngangenin lagi ><</div>
+        <div id="additional-responses" class="hidden">
+            <button onclick="nextStep()">Iya tau</button>
+            <button onclick="nextStep()">Iya makasih</button>
+        </div>
+        <div id="next-step" class="hidden">
+            <div>pokoknya harus vc/vn lagu eksentrik sekarang juga !!</div>
+            <div class="button-container">
+                <button onclick="accept()">Mau</button>
+                <button class="moveable-button" onclick="moveButton(this)">Ngga</button>
+            </div>
+        </div>
+        <div id="animation" class="hidden">Nah gitu nurut, anak siapa si bu delia bukan?</div>
+    </div>
+    <script>
+        const colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A6", "#FF8C33", "#8C33FF"];
+        const texts = ["Ngga mau", "Tidak", "Enggak", "Gak", "No", "pokoknya ga"];
+
+        function respond(response) {
+            if (response === 'makasih' || response === 'tidak') {
+                document.getElementById('responses').classList.add('hidden');
+                document.getElementById('additional-message').style.display = 'block';
+                document.getElementById('additional-responses').classList.remove('hidden');
+            }
+        }
+
+        function nextStep() {
+            document.getElementById('additional-message').classList.add('hidden');
+            document.getElementById('additional-responses').classList.add('hidden');
+            document.getElementById('next-step').classList.remove('hidden');
+        }
+
+        function accept() {
+            document.getElementById('next-step').classList.add('hidden');
+            document.getElementById('animation').classList.remove('hidden');
+            triggerConfetti();
+            triggerHearts();
+        }
+
+        function moveButton(button) {
+            const container = button.parentElement;
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+
+            const newLeft = Math.random() * (containerWidth - button.offsetWidth);
+            const newTop = Math.random() * (containerHeight - button.offsetHeight);
+
+            button.style.left = `${newLeft}px`;
+            button.style.top = `${newTop}px`;
+
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            button.style.backgroundColor = randomColor;
+            button.innerText = randomText;
+        }
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function triggerHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.bottom = `${Math.random() * 100}px`;
+                document.body.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
